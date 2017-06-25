@@ -1,7 +1,10 @@
 import { combineReducers } from 'redux';
+import workflows from './workflows';
+import instances from "./instances";
 
 const rootReducer = combineReducers({
-  state: (state = {}) => state,
+    workflows,
+    instances
 });
 
 export default rootReducer;

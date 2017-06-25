@@ -3,7 +3,9 @@
   "version": "1.1.0",
   "description": "Starter for Express, React, Redux, SCSS applications",
   "scripts": {
-    "dev": "webpack-dev-server --watch --colors",
+    "dev-backend": "NODE_ENV=development PORT=3000 nodemon ./server.js --watch backend/ --watch server.js",
+    "dev-frontend": "webpack-dev-server --watch --colors",
+    "dev": "concurrently --kill-others \"npm run dev-backend\" \"npm run dev-frontend\"",
     "build": "rimraf dist && NODE_ENV=production webpack --colors",
     "start": "NODE_ENV=production PORT=8080 pm2 start ./server.js",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
@@ -38,6 +40,7 @@
     "babel-preset-stage-1": "^6.5.0",
     "chai": "^3.5.0",
     "chai-jquery": "^2.0.0",
+    "concurrently": "^3.5.0",
     "css-loader": "^0.23.1",
     "eslint": "^2.10.2",
     "eslint-config-airbnb": "^9.0.1",
@@ -50,6 +53,7 @@
     "jsdom": "^9.0.0",
     "mocha": "^2.4.5",
     "node-sass": "^3.7.0",
+    "nodemon": "^1.11.0",
     "react-addons-test-utils": "^15.0.2",
     "react-hot-loader": "^1.3.0",
     "rimraf": "^2.6.1",
@@ -60,11 +64,15 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "amqplib": "^0.5.1",
     "express": "^4.13.4",
+    "file-loader": "^0.11.2",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
+    "react-graph-vis": "^0.1.2",
     "react-redux": "^5.0.2",
     "react-router": "^3.0.2",
-    "redux": "^3.5.2"
+    "redux": "^3.5.2",
+    "socket.io": "^2.0.3"
   }
 }

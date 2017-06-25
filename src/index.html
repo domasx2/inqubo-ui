@@ -6,9 +6,15 @@
     <meta name="robots" content="index,follow"/>
     <meta name="googlebot" content="index,follow"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title>Express, React, Redux, SCSS</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <title>Inqubo UI</title>
   </head>
   <body>
     <div id="react-root"></div>
+    <script>
+      if (window.location.host.split(':')[0] === 'localhost') {
+          document.write('<' + 'script src="http://localhost:3001/scripts/app.js">' + '<' +'/script>')
+      }
+    </script>
   </body>
 </html>
