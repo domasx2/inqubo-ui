@@ -5,7 +5,11 @@ import Instance from '../Instance';
 function Home({instances, workflows}) {
     return (
         <div className="container home">
-          { instances.map(instance => <Instance key={instance.workflow_id + '_' + instance.workflow_instance_key} workflow={workflows[instance.workflow_id]} instance={instance}/>)}
+          { instances.map(instance => {
+              return <Instance key={instance.workflow + '_' + instance.instance} workflow={workflows[instance.workflow]}
+                               instance={instance}/>
+          })
+          }
         </div>
     )
 }

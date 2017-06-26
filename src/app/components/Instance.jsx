@@ -14,8 +14,7 @@ const colors = {
     start: '#5DADE2',
     retry: '#5DADE2',
     failure: '#FF0000',
-    success: '#2ECC71',
-    default: '#FFFFFF'
+    success: '#2ECC71'
 }
 
 export default function Instance(props) {
@@ -24,7 +23,19 @@ export default function Instance(props) {
     const edges = []
 
     function process(step) {
-        nodes.push({id: step.name, label: step.name, color: colors[instance.steps[step.name] || 'default']});
+        const node = {
+            id: step.name,
+            label: step.name,
+            color: '#FFFFFF'
+        }
+
+        const instance_step = instance.steps[step.name];
+        if (instance_step && instance_step.events.length) {
+            const last_event = instance_step.events[0]
+            node.color = colors[last_event.name]
+        }
+
+        nodes.push(node);
         (step.children || []).forEach(child => {
             process(child);
             edges.push({from: step.name, to: child.name})

@@ -30,10 +30,12 @@ io.on('connection', socket => {
 
 function onWorkflowEvent(msg) {
     const body = JSON.parse(msg.content.toString('utf-8'))
+    const [step, name] = msg.fields.routingKey.split('.')
     const event = {
-        workflow_id: msg.properties.headers['workflow_id'],
-        workflow_instance_key: msg.properties.headers['workflow_instance_key'],
-        routing_key: msg.fields.routingKey,
+        workflow: msg.properties.headers['workflow_id'],
+        instance: msg.properties.headers['workflow_instance_key'],
+        step: step,
+        name: name,
         meta: body.meta,
         payload: body.payload
     }
