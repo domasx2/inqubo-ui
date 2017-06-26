@@ -3,10 +3,20 @@ import Graph from 'react-graph-vis';
 
 const options = {
     layout: {
-        hierarchical: true
+        hierarchical: {
+            enabled: true,
+            direction: 'LR',
+            sortMethod: 'directed'
+        }
+    },
+    nodes: {
+        shape: 'box'
     },
     edges: {
         color: "#000000"
+    },
+    physics: {
+        enabled: false
     }
 };
 
@@ -37,8 +47,8 @@ export default function Instance(props) {
 
         nodes.push(node);
         (step.children || []).forEach(child => {
-            process(child);
             edges.push({from: step.name, to: child.name})
+            process(child)
         })
     }
 
@@ -48,7 +58,7 @@ export default function Instance(props) {
 
     return (
         <div className="workflow-instance">
-            <span className="label">{`${workflow.workflow_id}:${instance.workflow_instance_key}`}</span>
+            <span className="label">{`${workflow.workflow_id}:${instance.instance}`}</span>
             <Graph graph={ { nodes, edges } } options={options}/>
         </div>
     )
