@@ -2,9 +2,7 @@ import { combineReducers } from 'redux';
 import workflows from './workflows';
 import instances from "./instances";
 
-const rootReducer = combineReducers({
+export default {
     workflows,
     instances
-});
-
-export default rootReducer;
+}

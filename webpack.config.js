@@ -32,6 +32,9 @@ var webpackConfig = {
       test: /.jsx?$/,
       include: Path.join(__dirname, './src/app'),
       loader: 'babel',
+    }, {
+        test: /.(svg|woff|woff2|png|ttf|eot)$/,
+        loader: 'file-loader'
     }],
   },
 };
@@ -65,10 +68,16 @@ isProduction
   ? webpackConfig.module.loaders.push({
       test: /\.scss$/,
       loader: ExtractSASS.extract(['css', 'sass']),
+    },{
+      test: /\.css$/,
+      loader: ExtractSASS.extract(['css']),
     })
   : webpackConfig.module.loaders.push({
       test: /\.scss$/,
       loaders: ['style', 'css', 'sass'],
+    },{
+      test: /\.css$/,
+      loaders: ['style', 'css'],
     });
 
 // ------------------------------------------
@@ -101,5 +110,7 @@ if (!isProduction) {
     historyApiFallback: true,
   };
 }
+
+webpackConfig.devtool = 'source-map';
 
 module.exports = webpackConfig;

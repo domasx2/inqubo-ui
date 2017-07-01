@@ -9,7 +9,7 @@ app.use(express.static('dist'));
 
 console.log(`node env ${process.env.NODE_ENV}`)
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
   const index = process.env.NODE_ENV === 'development' ? `${__dirname}/src/index.html` : `${__dirname}/dist/index.html`;
   console.log(`serving ${index}`);
   res.sendFile(index);
@@ -22,10 +22,14 @@ server.listen(port, () => {
 });
 
 const workflows = {};
+const event_log = [];
+const max_event_log_size=100;
 
 io.on('connection', socket => {
-  console.log('connected')
-  Object.keys(workflows).forEach(workflow_id => socket.emit('workflow', workflows[workflow_id]))
+    console.log('new connection')
+    // replay workflow descriptions and latest events
+    Object.keys(workflows).forEach(workflow_id => socket.emit('workflow', workflows[workflow_id]))
+    event_log.forEach(event => socket.emit('workflow_event', event))
 });
 
 function onWorkflowEvent(msg) {
@@ -34,15 +38,20 @@ function onWorkflowEvent(msg) {
     const event = {
         workflow: msg.properties.headers['workflow_id'],
         instance: msg.properties.headers['workflow_instance_key'],
+        timestamp: msg.properties.timestamp,
         step: step,
         name: name,
         meta: body.meta,
         payload: body.payload
     }
-    console.log('got event', event)
+    event_log.push(event)
+    if (event_log.length > max_event_log_size) event_log.shift()
+
+    console.log(`got event ${event.workflow}.${event.step}.${event.name}`)
     io.sockets.emit('workflow_event', event)
 }
 
+// discover workflows and susbcribe
 async function rabbits() {
     const EXCHANGE = 'inqubo_meta'
     const conn = await ampq.connect('amqp://guest:guest@localhost');

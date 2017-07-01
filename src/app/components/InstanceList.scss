@@ -1,0 +1,22 @@
+.instance-list {
+
+  .item {
+    span {
+      color: #333333;
+      margin-right: 20px;
+      font-size: 120%;
+    }
+
+    .segment {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .ui.progress {
+        flex: 1;
+        max-width: 300px;
+        margin: 0 !important;
+      }
+    }
+  }
+}

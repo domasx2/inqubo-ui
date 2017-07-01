@@ -1,65 +1,35 @@
-import React from 'react';
-import Graph from 'react-graph-vis';
+import React from 'react'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import { push } from 'react-router-redux'
+import {Route} from "react-router"
+import InstanceGraph from "./InstanceGraph"
+import StepEvents from "./StepEvents"
 
-const options = {
-    layout: {
-        hierarchical: {
-            enabled: true,
-            direction: 'LR',
-            sortMethod: 'directed'
-        }
-    },
-    nodes: {
-        shape: 'box'
-    },
-    edges: {
-        color: "#000000"
-    },
-    physics: {
-        enabled: false
+function Instance({workflow, instance, push, match, children=null}) {
+    if (!(instance && workflow)) return <p>loading...</p>;
+
+    function toggleStep(step) {
+        console.log('toggle step', step)
+        push(match.url + (step ? '/' + step : ''))
     }
-};
-
-const colors = {
-    start: '#5DADE2',
-    retry: '#5DADE2',
-    failure: '#FF0000',
-    success: '#2ECC71'
-}
-
-export default function Instance(props) {
-    const {workflow, instance} = props
-    const nodes = []
-    const edges = []
-
-    function process(step) {
-        const node = {
-            id: step.name,
-            label: step.name,
-            color: '#FFFFFF'
-        }
-
-        const instance_step = instance.steps[step.name];
-        if (instance_step && instance_step.events.length) {
-            const last_event = instance_step.events[0]
-            node.color = colors[last_event.name]
-        }
-
-        nodes.push(node);
-        (step.children || []).forEach(child => {
-            edges.push({from: step.name, to: child.name})
-            process(child)
-        })
-    }
-
-    process(workflow.initial_step)
-
-    console.log(nodes)
 
     return (
         <div className="workflow-instance">
-            <span className="label">{`${workflow.workflow_id}:${instance.instance}`}</span>
-            <Graph graph={ { nodes, edges } } options={options}/>
+            <div className="container">
+                <h1>{`${instance.workflow}.${instance.instance}`}</h1>
+                <InstanceGraph workflow={workflow} instance={instance} onNodeSelect={toggleStep} />
+            </div>
+            <Route path={match.url + '/:step'} render={(props) => <StepEvents step={props.match.params.step} instance={instance}/>}/>
         </div>
     )
 }
+
+export default withRouter(connect((state, ownProps) => {
+    const workflow_id = ownProps.match.params.workflow_id
+    const instance_id = ownProps.match.params.instance_id
+    return {
+        workflow: state.workflows[workflow_id],
+        instance: state.instances.filter(i => i.workflow === workflow_id && i.instance === instance_id)[0]
+    }
+}, { push })(Instance))

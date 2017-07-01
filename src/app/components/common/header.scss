@@ -1,29 +1,14 @@
 header {
   width: 100%;
-  padding: 0;
+  padding: 10px 20px;
   border-bottom: 1px solid $light-gray;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 
   nav {
-    text-align: center;
-
-    ul {
-      text-align: center;
-
-      li {
-        display: inline;
-        margin-right: 60px;
-
-        a {
-          color: #333;
-          text-decoration: none;
-
-          &:hover {
-            color: $light-blue;
-            text-decoration: underline;
-          }
-        }
-      }
+    text-align: left;
+    .logo {
+      font-size: 200%;
+      color: #333333;
     }
   }
 }
