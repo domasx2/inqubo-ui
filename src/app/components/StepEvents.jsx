@@ -12,7 +12,7 @@ export default function StepEvents({step, instance}) {
                 <Item.Content>
                     <Item.Header>{event.name}</Item.Header>
                     <Item.Meta>{moment.unix(event.timestamp).format()}</Item.Meta>
-                    <Item.Content>{JSON.stringify(event.payload, null, 2)}</Item.Content>
+                    <Item.Content><pre>{JSON.stringify(event.payload, null, 2)}</pre></Item.Content>
                 </Item.Content>
             </Item>) }
         </Item.Group>

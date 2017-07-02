@@ -6,9 +6,11 @@ const options = {
         hierarchical: {
             enabled: true,
             direction: 'LR',
-            sortMethod: 'directed'
+            sortMethod: 'directed',
+            levelSeparation: 250
         }
     },
+    autoResize: true,
     nodes: {
         shape: 'box'
     },
@@ -59,5 +61,5 @@ export default function InstanceGraph({workflow, instance, onNodeSelect=null}) {
         }
     }
 
-    return <Graph graph={ { nodes, edges } } options={options} events={events}/>
+    return <Graph style={ {width: '100%' }} graph={ { nodes, edges } } options={options} events={events}/>
 }
