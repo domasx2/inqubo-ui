@@ -1,3 +1,5 @@
+import socket from '../socket'
+
 export function describeWorkflow(workflow) {
     console.log(`got workflow ${workflow.workflow_id}`)
     return {
@@ -11,5 +13,14 @@ export function processEvent(event) {
     return {
         type: 'event',
         payload: event
+    }
+}
+
+export function initWorkflow(workflow, instance, meta, payload) {
+    console.log('init workflow!', workflow, instance, meta, payload)
+    socket.emit('init_workflow', {workflow, instance, meta, payload})
+    return {
+        type: 'init_workflow',
+        payload: {workflow, instance, meta, payload}
     }
 }

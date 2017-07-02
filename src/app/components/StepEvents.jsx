@@ -8,7 +8,7 @@ export default function StepEvents({step, instance}) {
     const events = instance.steps[step] ? instance.steps[step].events : []
     return <div className="step-events container">
         <Item.Group divided>
-            { events.map(event => <Item>
+            { events.map((event, idx) => <Item key={idx}>
                 <Item.Content>
                     <Item.Header>{event.name}</Item.Header>
                     <Item.Meta>{moment.unix(event.timestamp).format()}</Item.Meta>

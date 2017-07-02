@@ -6,6 +6,7 @@ import createHistory from 'history/createBrowserHistory'
 import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
 import reducers from './reducers';
 import { describeWorkflow, processEvent } from './actions';
+import socket from './socket'
 
 import './components/bundle.scss';
 import 'semantic-ui-css/semantic.min.css'
@@ -29,6 +30,6 @@ ReactDOM.render(
         </ConnectedRouter>
     </Provider> , document.getElementById('react-root'));
 
-const socket = io.connect(window.location.protocol + '//' + window.location.host);
+
 socket.on('workflow', workflow => store.dispatch(describeWorkflow(workflow)))
 socket.on('workflow_event', event => store.dispatch(processEvent(event)))

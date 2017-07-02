@@ -1,10 +1,8 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React from 'react'
 import InstanceListItem from './InstanceListItem'
 import { List } from 'semantic-ui-react'
-import { withRouter } from 'react-router-dom'
 
-function InstanceList({instances, workflows}) {
+export default function InstanceList({instances, workflows}) {
     return (
         <div className="container instance-list">
             <List>
@@ -13,6 +11,3 @@ function InstanceList({instances, workflows}) {
         </div>
     )
 }
-
-export default withRouter(connect(state => {console.log('state', state); return state;})(InstanceList))
-

@@ -24,12 +24,20 @@ server.listen(port, () => {
 const workflows = {};
 const event_log = [];
 const max_event_log_size=100;
+let channel;
 
 io.on('connection', socket => {
     console.log('new connection')
     // replay workflow descriptions and latest events
     Object.keys(workflows).forEach(workflow_id => socket.emit('workflow', workflows[workflow_id]))
     event_log.forEach(event => socket.emit('workflow_event', event))
+    socket.on('init_workflow', ({workflow, instance, meta, payload}) => {
+        console.log('init', workflow, instance, meta, payload)
+        if (channel) channel.publish(workflow, workflow + '.init', Buffer.from(JSON.stringify({meta, payload}), 'utf-8'),
+            { persistent: true, contentType: 'application/json', contentEncoding: 'utf-8',
+              headers: { workflow_id: workflow, workflow_instance_key: instance}})
+    })
+
 });
 
 function onWorkflowEvent(msg) {
@@ -55,7 +63,7 @@ function onWorkflowEvent(msg) {
 async function rabbits() {
     const EXCHANGE = 'inqubo_meta'
     const conn = await ampq.connect('amqp://guest:guest@localhost');
-    const channel = await conn.createChannel()
+    channel = await conn.createChannel()
     await channel.assertExchange('inqubo_meta', 'direct')
     const queue = (await channel.assertQueue('', {autoDelete: true})).queue;
     console.log('queue is ' + queue)
