@@ -15,5 +15,5 @@ And open http://localhost:3000/
 ```bash
 npm i
 npm build
-PORT=80 AMQP_URI=amqp://myrabbitmq start
+PORT=80 AMQP_URI=amqp://myrabbitmq npm start
 ```
