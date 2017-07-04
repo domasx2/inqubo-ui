@@ -62,7 +62,7 @@ function onWorkflowEvent(msg) {
 // discover workflows and susbcribe
 async function rabbits() {
     const EXCHANGE = 'inqubo_meta'
-    const conn = await ampq.connect('amqp://guest:guest@localhost');
+    const conn = await ampq.connect(process.env.AMQP_URI || 'amqp://guest:guest@localhost');
     channel = await conn.createChannel()
     await channel.assertExchange('inqubo_meta', 'direct')
     const queue = (await channel.assertQueue('', {autoDelete: true})).queue;
