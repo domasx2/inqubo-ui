@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Button, Form, Message, Modal, Select} from 'semantic-ui-react'
+import shortid from 'shortid'
 
 const default_form = {
     workflow: null,
@@ -32,7 +33,7 @@ export default class TriggerWorkflowModal extends Component {
         const errors = []
         const form = this.state.form
         if (!form.workflow) errors.push('Must select a workflow.')
-        if (!form.instance) errors.push('Must provide instance id.')
+        if (!form.instance) form.instance = shortid.generate()
         let meta, payload;
         try {
             meta = JSON.parse(form.meta)
