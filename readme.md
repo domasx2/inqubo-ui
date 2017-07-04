@@ -1,6 +1,6 @@
 # Inqubo-UI
 
-Monitoring web app for Inqubo. Monitor running workflows, trigger new ones.
+Monitoring web app for [Inqubo](https://github.com/domasx2/inqubo). Monitor running workflows, trigger new ones.
 
 ## run dev server
 ```bash
